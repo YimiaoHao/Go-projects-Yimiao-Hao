@@ -70,3 +70,25 @@ Part B 1
 Part B 0
 Part B 2
 Part B 4
+
+barrier(2).go：
+Part A 2
+Part A 4
+Part A 0
+Part A 5
+Part A 3
+Part A 1
+Part A 9
+Part A 8
+Part A 7
+Part A 6
+Part B 6
+Part B 5
+Part B 2
+Part B 4
+Part B 0
+Part B 1
+Part B 3
+Part B 9
+Part B 8
+Part B 7
