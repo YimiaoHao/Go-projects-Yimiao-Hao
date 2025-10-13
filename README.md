@@ -1,7 +1,7 @@
 # Go-projects-Yimiao-Hao
 
 ## Project Overview
-Learn several typical synchronisation methods for goroutines in the ‘meet/block’ problem through four simplest feasible examples. Understand the synchronisation semantics in concurrency where ‘all A must complete before B collectively begins’, along with the trade-offs between one-time barriers and reusable barriers in implementation and performance. Grasp the minimal implementation of a barrier allowing N processes to synchronise once: each worker prints part A, waits at the barrier, and only prints part B after all participants have arrived.
+Learn several typical synchronisation methods for goroutines in the ‘meet or block’ problem through four simplest feasible examples. Understand the synchronisation semantics in concurrency where ‘all A must complete before B collectively begins’, along with the trade-offs between one-time barriers and reusable barriers in implementation and performance. Grasp the minimal implementation of a barrier allowing N processes to synchronise once: each worker prints part A, waits at the barrier, and only prints part B after all participants have arrived.
 
 ## Example Output
 rendezvous.go：
