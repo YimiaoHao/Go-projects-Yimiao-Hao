@@ -1,1 +1,149 @@
+// Dining Philosophers Template Code
+// Author: Joseph Kehoe
+// Created: 21/10/24
+//GPL Licence
+// MISSING:
+// 1. Readme
+// 2. Full licence info.
+// 3. Comments
+// 4. It can Deadlock!
+/*
+package main
+
+import (
+	"fmt"
+	"math/rand/v2"
+	"sync"
+	"time"
+)
+
+func think(index int) {
+	var X time.Duration
+	X = time.Duration(rand.IntN(5))
+	time.Sleep(X * time.Second) //wait random time amount
+	fmt.Println("Phil: ", index, "was thinking")
+}
+
+func eat(index int) {
+	var X time.Duration
+	X = time.Duration(rand.IntN(5))
+	time.Sleep(X * time.Second) //wait random time amount
+	fmt.Println("Phil: ", index, "was eating")
+}
+
+func getForks(index int, forks map[int]chan bool) {
+	forks[index] <- true
+	forks[(index+1)%5] <- true
+}
+
+func putForks(index int, forks map[int]chan bool) {
+	<-forks[index]
+	<-forks[(index+1)%5]
+}
+
+func doPhilStuff(index int, wg *sync.WaitGroup, forks map[int]chan bool) {
+	for {
+		think(index)
+		getForks(index, forks)
+		eat(index)
+		putForks(index, forks)
+	}
+
+}
+
+func main() {
+	var wg sync.WaitGroup
+	philCount := 5
+	wg.Add(philCount)
+
+	forks := make(map[int]chan bool)
+	for k := range philCount {
+		forks[k] = make(chan bool, 1)
+	} //set up forks
+	for N := range philCount {
+		go doPhilStuff(N, &wg, forks)
+	} //start philosophers
+	wg.Wait() //wait here until everyone (10 go routines) is done
+
+} //main
+*/
+
+package main
+
+import (
+	"fmt"
+	"math/rand/v2"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
+
+func think(id int) {
+	time.Sleep(time.Duration(rand.IntN(5)) * time.Second)
+	fmt.Println("Phil", id, "was thinking")
+}
+
+func eat(id int) {
+	time.Sleep(time.Duration(rand.IntN(5)) * time.Second)
+	fmt.Println("Phil", id, "was eating")
+}
+
+// Deadlock-free philosopher (infinite loop)
+// - forks: each fork is a buffered channel of size 1 (token = fork available)
+// - room : waiter/semaphore, at most N-1 philosophers may try to pick forks at the same time
+func philosopher(id int, forks []chan struct{}, room chan struct{}) {
+	left := id
+	right := (id + 1) % len(forks)
+
+	// Resource ordering: always pick the lower-numbered fork first,
+	// then the higher-numbered fork → breaks circular wait
+	low, high := left, right
+	if high < low {
+		low, high = high, low
+	}
+
+	for {
+		think(id)
+
+		// enter the dining room (N-1 limit)
+		room <- struct{}{}
+
+		// pick forks in fixed order
+		<-forks[low]
+		<-forks[high]
+
+		eat(id)
+
+		// put forks back and leave the room
+		forks[high] <- struct{}{}
+		forks[low] <- struct{}{}
+		<-room
+	}
+}
+
+func main() {
+	n := 5
+
+	// init forks: each fork starts with 1 token = available
+	forks := make([]chan struct{}, n)
+	for i := 0; i < n; i++ {
+		forks[i] = make(chan struct{}, 1)
+		forks[i] <- struct{}{}
+	}
+
+	// waiter: allow at most n-1 philosophers to try to pick forks
+	room := make(chan struct{}, n-1)
+
+	// start n philosophers (infinite loop)
+	for i := 0; i < n; i++ {
+		go philosopher(i, forks, room)
+	}
+
+	// wait for Ctrl+C / termination signal to exit manually
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
+	<-sigCh
+	fmt.Println("\nShutting down...")
+}
 
