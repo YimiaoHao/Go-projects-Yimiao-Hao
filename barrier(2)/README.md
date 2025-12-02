@@ -1,12 +1,12 @@
-\# Go Barrier Synchronisation Demo
+# Go Barrier Synchronisation Demo
 
 
 
-\## Overview
+## Overview
 
 
 
-A \*\*barrier\*\* is a synchronisation primitive that makes a group of concurrent tasks (here: goroutines) all wait until \*every\* member of the group has reached the same point in the code. Only then can they all continue.
+A **barrier** is a synchronisation primitive that makes a group of concurrent tasks (here: goroutines) all wait until \*every\* member of the group has reached the same point in the code. Only then can they all continue.
 
 
 
@@ -377,6 +377,7 @@ func main() {
 
 
    (The exact order of IDs may vary, but \*\*no “Part B” line should appear before all “Part A” lines\*\*.)
+
 
 
 
