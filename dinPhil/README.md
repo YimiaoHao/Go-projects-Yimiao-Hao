@@ -1,12 +1,4 @@
-````markdown
 # Dining Philosophers – Deadlock-Free Go Implementation
-
-This repository contains a Go implementation of the classic **Dining Philosophers** concurrency problem.
-
-The original template and licence header were provided by **Dr. Joseph Kehoe (SETU)**.  
-The active, deadlock-free solution was implemented by the student using Go’s channels and a “waiter” (semaphore) pattern.
-
----
 
 ## Overview
 
@@ -224,13 +216,4 @@ func main() {
 
 ---
 
-## Licence
 
-The file header indicates a **GPL licence** (GPL-style, as per course template from Dr. Joseph Kehoe).
-For a full legal text, include the GNU General Public License (version 3 or later) in a separate `LICENSE` file or refer to your course instructions.
-
-* Original template © 2024 Dr. Joseph Kehoe.
-* Student modifications © 2024 [Your Name].
-
-```
-```
